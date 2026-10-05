@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>English Rush — números e alfabeto em inglês</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFF6E5;--surface:#FFFFFF;--ink:#23213A;--muted:#6B6880;--line:#EADFC8;
+  --blue:#3B6FF5;--blue-ink:#FFFFFF;--sun:#FFC23D;--sun-ink:#3A2500;--pink:#FF6B8B;--green:#2DB37A;--red:#E5484D;
+  --soft:#FCEFD4;
+  --font:"Fredoka",ui-rounded,"SF Pro Rounded",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light;box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#17162A;--surface:#211F38;--ink:#F3F1FF;--muted:#ABA7C7;--line:#34315A;
+    --blue:#7C9DFF;--blue-ink:#10142B;--sun:#FFC23D;--sun-ink:#3A2500;--pink:#FF7F9B;--green:#43CF92;--red:#FF6B70;
+    --soft:#2A2747;color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#17162A;--surface:#211F38;--ink:#F3F1FF;--muted:#ABA7C7;--line:#34315A;
+  --blue:#7C9DFF;--blue-ink:#10142B;--sun:#FFC23D;--sun-ink:#3A2500;--pink:#FF7F9B;--green:#43CF92;--red:#FF6B70;
+  --soft:#2A2747;color-scheme:dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:18px;line-height:1.4}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:4px solid var(--sun);outline-offset:3px}
+.wrap{max-width:560px;margin:0 auto;padding:18px 16px 40px}
+[hidden]{display:none!important}
+
+header{text-align:center;margin:6px 0 18px}
+.logo{display:inline-flex;align-items:baseline;gap:6px;font-weight:700;font-size:40px;letter-spacing:-.01em;line-height:1}
+.logo .n{color:var(--blue)}
+.logo .r{color:var(--pink);transform:rotate(-4deg);display:inline-block}
+.tag{color:var(--muted);margin:6px 0 0;font-size:17px}
+
+.card{background:var(--surface);border:2px solid var(--line);border-radius:22px;padding:18px}
+.card + .card{margin-top:14px}
+h2{font-size:20px;margin:0 0 10px;font-weight:600}
+.choices{display:grid;gap:10px}
+.mode{display:flex;align-items:center;gap:14px;text-align:left;width:100%;border:2px solid var(--line);background:var(--bg);border-radius:18px;padding:14px;cursor:pointer}
+.mode .ic{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-size:26px;flex:none}
+.mode b{display:block;font-weight:600;font-size:19px}
+.mode span{color:var(--muted);font-size:15px}
+.mode[aria-pressed="true"]{border-color:var(--blue);box-shadow:0 0 0 2px var(--blue) inset}
+.levels{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.lvl{border:2px solid var(--line);background:var(--bg);border-radius:16px;padding:12px 6px;cursor:pointer;text-align:center}
+.lvl b{display:block;font-size:20px;font-weight:600}
+.lvl span{font-size:14px;color:var(--muted)}
+.lvl[aria-pressed="true"]{border-color:var(--blue);box-shadow:0 0 0 2px var(--blue) inset}
+.big{display:block;width:100%;border:0;border-radius:18px;padding:16px;font-size:22px;font-weight:600;background:var(--blue);color:var(--blue-ink);cursor:pointer;margin-top:16px;box-shadow:0 5px 0 rgba(0,0,0,.18)}
+.big:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.18)}
+.best{text-align:center;color:var(--muted);font-size:15px;margin:10px 0 0}
+
+details.tips{margin-top:14px}
+details.tips summary{cursor:pointer;font-weight:600}
+details.tips ul{margin:10px 0 0;padding-left:20px}
+details.tips li{margin:6px 0}
+details.tips code{background:var(--soft);padding:1px 6px;border-radius:6px;font-family:inherit;font-weight:600}
+
+/* game */
+.hud{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.pill{background:var(--surface);border:2px solid var(--line);border-radius:999px;padding:6px 12px;font-weight:600;font-size:16px}
+.progress{height:10px;background:var(--soft);border-radius:99px;overflow:hidden;margin-bottom:14px}
+.progress i{display:block;height:100%;background:var(--sun);transition:width .3s}
+.quit{background:transparent;border:0;color:var(--muted);cursor:pointer;font-size:16px;text-decoration:underline}
+.ask{text-align:center;color:var(--muted);font-size:17px;margin:0 0 6px}
+.prompt{text-align:center;font-weight:700;font-size:clamp(44px,14vw,84px);line-height:1.05;margin:4px 0 14px;word-break:break-word}
+.prompt.word{font-size:clamp(30px,9vw,46px);font-weight:600;color:var(--blue)}
+.speak{display:flex;align-items:center;justify-content:center;gap:10px;margin:0 auto 14px;border:0;background:var(--sun);color:var(--sun-ink);border-radius:999px;padding:14px 26px;font-size:20px;font-weight:600;cursor:pointer;box-shadow:0 5px 0 rgba(0,0,0,.15)}
+.speak:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.15)}
+.speak svg{width:26px;height:26px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{border:2px solid var(--line);background:var(--surface);border-radius:18px;padding:16px 8px;font-size:24px;font-weight:600;cursor:pointer;min-height:68px}
+.opt.wordy{font-size:17px}
+.opt.right{background:var(--green);border-color:var(--green);color:#fff}
+.opt.wrong{background:var(--red);border-color:var(--red);color:#fff}
+.opt:disabled{cursor:default}
+.answer{display:flex;gap:8px}
+.answer input{flex:1;min-width:0;border:2px solid var(--line);background:var(--surface);border-radius:16px;padding:14px;font-size:20px}
+.answer button{border:0;background:var(--blue);color:var(--blue-ink);border-radius:16px;padding:0 18px;font-weight:600;cursor:pointer}
+.fb{border-radius:18px;padding:12px 14px;margin-top:14px;text-align:center;font-weight:600}
+.fb.ok{background:color-mix(in srgb,var(--green) 18%,transparent);color:var(--green)}
+.fb.no{background:color-mix(in srgb,var(--red) 14%,transparent);color:var(--red)}
+.fb .sol{display:block;color:var(--ink);font-size:22px;margin-top:4px}
+.fb .mini{margin-top:8px;border:0;background:var(--surface);border-radius:999px;padding:6px 14px;font-weight:600;cursor:pointer;color:var(--ink)}
+.next{margin-top:12px}
+@keyframes pop{0%{transform:scale(.9)}60%{transform:scale(1.06)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.pop{animation:pop .3s}.shake{animation:shake .3s}
+@media (prefers-reduced-motion:reduce){.pop,.shake{animation:none}.progress i{transition:none}}
+
+/* end */
+.end{text-align:center}
+.stars{font-size:52px;letter-spacing:6px;margin:6px 0}
+.stars .off{opacity:.2}
+.score{font-size:48px;font-weight:700;margin:0}
+.msg{color:var(--muted);margin:6px 0 0}
+.review{text-align:left;margin-top:14px}
+.review li{margin:4px 0}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row2 .big{margin-top:16px}
+.big.alt{background:var(--surface);color:var(--ink);border:2px solid var(--line);box-shadow:0 5px 0 var(--line)}
+
+.topics{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--surface);border:2px solid var(--line);border-radius:20px;padding:6px;margin-bottom:14px}
+.topic{border:0;background:transparent;border-radius:15px;padding:12px 6px;font-size:19px;font-weight:600;cursor:pointer}
+.topic[aria-pressed="true"]{background:var(--blue);color:var(--blue-ink)}
+table.abc{width:100%;border-collapse:collapse;margin-top:10px;font-size:16px}
+table.abc th{text-align:left;color:var(--muted);font-weight:500;font-size:14px;padding:4px 6px}
+table.abc td{padding:7px 6px;border-top:1px solid var(--line)}
+table.abc td:first-child{font-weight:700;font-size:22px;width:46px}
+table.abc .pt{font-weight:600;color:var(--blue)}
+table.abc button{border:0;background:var(--soft);border-radius:999px;width:38px;height:38px;cursor:pointer;font-size:17px}
+.tablewrap{overflow-x:auto}
+.letter{font-size:clamp(70px,22vw,110px)}
+.spell{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:4px 0 12px}
+.spell span{background:var(--soft);border-radius:10px;padding:6px 10px;font-weight:600;font-size:20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo"><span class="n">English</span><span class="r">Rush!</span></div>
+    <p class="tag">Números e alfabeto em inglês, jogando</p>
+  </header>
+
+  <!-- MENU -->
+  <section id="menu">
+    <div class="topics" role="group" aria-label="O que treinar">
+      <button class="topic" type="button" data-topic="num" aria-pressed="true">🔢 Números</button>
+      <button class="topic" type="button" data-topic="abc" aria-pressed="false">🔤 Alfabeto</button>
+    </div>
+    <div class="card">
+      <h2>Escolha o jogo</h2>
+      <div class="choices" id="modes">
+        <button class="mode" type="button" data-mode="listen" aria-pressed="true"><span class="ic" style="background:var(--sun)">🎧</span><span><b id="m1t">Ouvir</b><span id="m1d"></span></span></button>
+        <button class="mode" type="button" data-mode="read" aria-pressed="false"><span class="ic" style="background:var(--pink)">👀</span><span><b id="m2t">Ler</b><span id="m2d"></span></span></button>
+        <button class="mode" type="button" data-mode="write" aria-pressed="false"><span class="ic" style="background:var(--blue)">✏️</span><span><b id="m3t">Escrever</b><span id="m3d"></span></span></button>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Nível</h2>
+      <div class="levels" id="levels">
+        <button class="lvl" type="button" data-lvl="1" aria-pressed="true"><b id="l1t"></b><span id="l1d"></span></button>
+        <button class="lvl" type="button" data-lvl="2" aria-pressed="false"><b id="l2t"></b><span id="l2d"></span></button>
+        <button class="lvl" type="button" data-lvl="3" aria-pressed="false"><b id="l3t"></b><span id="l3d"></span></button>
+      </div>
+      <button class="big" type="button" id="startBtn">Jogar ▶</button>
+      <p class="best" id="bestTxt"></p>
+
+      <details class="tips" id="tipsNum">
+        <summary>Dicas para lembrar</summary>
+        <ul>
+          <li>De 13 a 19 termina com <code>-teen</code>: thir<b>teen</b>, four<b>teen</b>…</li>
+          <li>As dezenas terminam com <code>-ty</code>: twen<b>ty</b>, thir<b>ty</b>, for<b>ty</b>… (forty não tem “u”!)</li>
+          <li>Junte dezena e unidade com hífen: <code>forty-seven</code> = 47</li>
+          <li>Centenas: <code>three hundred twelve</code> = 312 (alguns falam “three hundred <i>and</i> twelve”, os dois valem)</li>
+          <li>Cuidado: <code>fifteen</code> (15) parece <code>fifty</code> (50). Escute o final!</li>
+        </ul>
+      </details>
+
+      <details class="tips" id="tipsAbc" hidden>
+        <summary>Como se fala cada letra</summary>
+        <ul>
+          <li>As pegadinhas para quem fala português: <code>A</code> soa <b>“ei”</b>, <code>E</code> soa <b>“i”</b> e <code>I</code> soa <b>“ai”</b>.</li>
+          <li><code>G</code> é <b>“dji”</b> e <code>J</code> é <b>“djei”</b>. Muita gente troca os dois!</li>
+          <li>Muitas letras terminam com som de <b>“i”</b>: B, C, D, E, G, P, T, V, Z. Preste atenção no começo.</li>
+          <li><code>H</code> é <b>“eitch”</b>, <code>R</code> é <b>“ar”</b>, <code>W</code> é <b>“dâbliu”</b> (quer dizer “U duplo”) e <code>Y</code> é <b>“uai”</b>.</li>
+          <li><code>Z</code> é <b>“zi”</b> nos Estados Unidos e <b>“zéd”</b> na Inglaterra. O jogo usa o americano.</li>
+          <li>A pronúncia em português é só aproximada. Toque em 🔊 para ouvir a de verdade.</li>
+        </ul>
+        <div class="tablewrap"><table class="abc" id="abcTable"><tr><th>Letra</th><th>Soa como</th><th>Nome em inglês</th><th></th></tr></table></div>
+      </details>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section id="game" hidden>
+    <div class="hud">
+      <span class="pill" id="qCount">1 / 10</span>
+      <span class="pill" id="streak">🔥 0</span>
+      <span class="pill" id="pts">⭐ 0</span>
+    </div>
+    <div class="progress"><i id="bar" style="width:0"></i></div>
+    <div class="card" id="qCard">
+      <p class="ask" id="ask"></p>
+      <div id="promptBox"></div>
+      <div id="inputBox"></div>
+      <div id="fbBox"></div>
+    </div>
+    <p style="text-align:center"><button class="quit" type="button" id="quitBtn">Sair do jogo</button></p>
+  </section>
+
+  <!-- END -->
+  <section id="end" hidden>
+    <div class="card end">
+      <div class="stars" id="stars"></div>
+      <p class="score" id="finalScore"></p>
+      <p class="msg" id="finalMsg"></p>
+      <div class="review" id="review"></div>
+      <div class="row2">
+        <button class="big" type="button" id="againBtn">Jogar de novo</button>
+        <button class="big alt" type="button" id="menuBtn">Menu</button>
+      </div>
+    </div>
+  </section>
+</div>
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const ROUND = 10;
+
+  /* ---------- números ---------- */
+  const MAX = { 1:20, 2:100, 3:1000 };
+  const ONES = ["zero","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"];
+  const TENS = ["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
+  function words(n){
+    if (n < 20) return ONES[n];
+    if (n < 100) return TENS[Math.floor(n/10)] + (n % 10 ? "-" + ONES[n % 10] : "");
+    if (n < 1000) return ONES[Math.floor(n/100)] + " hundred" + (n % 100 ? " " + words(n % 100) : "");
+    return "one thousand";
+  }
+  const norm = s => s.toLowerCase().replace(/[-–—]/g, " ").replace(/\band\b/g, " ").replace(/^a hundred/, "one hundred").replace(/^a thousand/, "one thousand").replace(/[^a-z ]/g, "").replace(/\s+/g, " ").trim();
+
+  /* ---------- alfabeto ---------- */
+  const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+  const PT = { A:"ei",B:"bi",C:"si",D:"di",E:"i",F:"éf",G:"dji",H:"eitch",I:"ai",J:"djei",K:"kei",L:"él",M:"ém",N:"én",O:"ou",P:"pi",Q:"kiu",R:"ar",S:"és",T:"ti",U:"iu",V:"vi",W:"dâbliu",X:"éks",Y:"uai",Z:"zi" };
+  const NAME = { A:"a",B:"bee",C:"cee",D:"dee",E:"e",F:"ef",G:"gee",H:"aitch",I:"i",J:"jay",K:"kay",L:"el",M:"em",N:"en",O:"o",P:"pee",Q:"cue",R:"ar",S:"ess",T:"tee",U:"u",V:"vee",W:"double-u",X:"ex",Y:"wye",Z:"zee" };
+  const CONFUSE = ["BCDEGPTVZ","AHJK","IY","EIA","GJ","MN","QUW","FSX","AEI"];
+  const RANGE = { 1:LETTERS.slice(0,13), 2:LETTERS.slice(13), 3:LETTERS };
+  const WORDS = {
+    1:["cat","dog","sun","red","box","cup","bus","hat","pen","map","bed","fox","egg","zoo","yes","big","jam","van"],
+    2:["book","fish","frog","milk","tree","blue","ball","cake","game","jump","kite","lion","moon","star","rain","ship","quiz","wolf"],
+    3:["apple","house","horse","water","pizza","happy","green","music","zebra","queen","juice","robot","snake","quiet","world","tiger","yellow","jacket"]
+  };
+  const spoken = L => L === "A" ? "A." : L + ".";
+
+  /* ---------- voz ---------- */
+  const canSpeak = "speechSynthesis" in window;
+  let voice = null;
+  function pickVoice(){
+    if (!canSpeak) return;
+    const v = speechSynthesis.getVoices();
+    voice = v.find(x => /en[-_]US/i.test(x.lang)) || v.find(x => /^en/i.test(x.lang)) || null;
+  }
+  if (canSpeak){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+  function say(text, slow){
+    if (!canSpeak) return;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "en-US"; if (voice) u.voice = voice; u.rate = slow ? 0.55 : 0.85;
+    speechSynthesis.speak(u);
+  }
+  const spellOut = w => w.toUpperCase().split("").map(spoken).join(" ");
+
+  /* ---------- tabela de pronúncia ---------- */
+  const tbl = $("abcTable");
+  LETTERS.forEach(L => {
+    const tr = document.createElement("tr");
+    const a = document.createElement("td"); a.textContent = L;
+    const b = document.createElement("td"); b.className = "pt"; b.textContent = "“" + PT[L] + "”";
+    const c = document.createElement("td"); c.textContent = NAME[L];
+    const d = document.createElement("td");
+    if (canSpeak){ const btn = document.createElement("button"); btn.type = "button"; btn.textContent = "🔊"; btn.setAttribute("aria-label", "Ouvir a letra " + L); btn.onclick = () => say(spoken(L)); d.appendChild(btn); }
+    tr.append(a, b, c, d); tbl.appendChild(tr);
+  });
+
+  /* ---------- recordes (este aparelho) ---------- */
+  function getBest(){ try { return JSON.parse(localStorage.getItem("numberrush:best") || "{}") || {}; } catch(e){ return {}; } }
+  function setBest(b){ try { localStorage.setItem("numberrush:best", JSON.stringify(b)); } catch(e){} }
+
+  /* ---------- menu ---------- */
+  let topic = "num", mode = "listen", lvl = 1;
+  const TEXT = {
+    num: { m:[["Ouvir","Escute o número e escolha o certo"],["Ler","Leia o número em inglês e ache os algarismos"],["Escrever","Veja o número e escreva em inglês"]],
+           l:[["0–20","Começo"],["0–100","Médio"],["0–1000","Desafio"]] },
+    abc: { m:[["Ouvir","Escute a letra e escolha a certa"],["Ler a pronúncia","Veja como se fala e ache a letra"],["Soletrar","Escute uma palavra soletrada e escreva"]],
+           l:[["A–M","Começo"],["N–Z","Médio"],["A–Z","Desafio"]] }
+  };
+  function pick(groupId, attr, val){
+    document.querySelectorAll("#" + groupId + " button").forEach(b => b.setAttribute("aria-pressed", b.dataset[attr] === String(val)));
+  }
+  function labels(){
+    const t = TEXT[topic];
+    t.m.forEach((x, k) => { $("m" + (k+1) + "t").textContent = x[0]; $("m" + (k+1) + "d").textContent = x[1]; });
+    t.l.forEach((x, k) => { $("l" + (k+1) + "t").textContent = topic === "abc" && mode === "write" ? ["3 letras","4 letras","5+ letras"][k] : x[0]; $("l" + (k+1) + "d").textContent = x[1]; });
+    $("tipsNum").hidden = topic !== "num"; $("tipsAbc").hidden = topic !== "abc";
+    showBest();
+  }
+  function modeName(){ return TEXT[topic].m[["listen","read","write"].indexOf(mode)][0]; }
+  function showBest(){
+    const b = getBest()[topic + mode + lvl];
+    $("bestTxt").textContent = b != null ? "Seu recorde em " + modeName() + " (" + $("l" + lvl + "t").textContent + "): " + b + " ⭐" : "";
+  }
+  document.querySelectorAll(".topic").forEach(b => b.onclick = () => { topic = b.dataset.topic; pick("menu .topics", "topic", topic); document.querySelectorAll(".topic").forEach(x => x.setAttribute("aria-pressed", x.dataset.topic === topic)); labels(); });
+  document.querySelectorAll("#modes button").forEach(b => b.onclick = () => { mode = b.dataset.mode; pick("modes","mode",mode); labels(); });
+  document.querySelectorAll("#levels button").forEach(b => b.onclick = () => { lvl = +b.dataset.lvl; pick("levels","lvl",lvl); showBest(); });
+
+  /* ---------- jogo ---------- */
+  let qs = [], i = 0, points = 0, streak = 0, hits = 0, misses = [], answered = false;
+  const rnd = max => Math.floor(Math.random() * (max + 1));
+  const shuffle = a => a.map(x => [Math.random(), x]).sort((p, q) => p[0] - q[0]).map(x => x[1]);
+  function makeQuestions(){
+    if (topic === "abc") return shuffle(mode === "write" ? WORDS[lvl] : RANGE[lvl]).slice(0, ROUND);
+    const max = MAX[lvl], set = new Set();
+    while (set.size < ROUND){ let n = rnd(max); if (lvl === 3 && Math.random() < .25) n = rnd(99); set.add(n); }
+    return [...set];
+  }
+  function numDistractors(n){
+    const max = MAX[lvl], out = new Set([n]), near = [];
+    if (n >= 13 && n <= 19) near.push((n - 10) * 10);
+    if (n % 10 === 0 && n >= 30 && n <= 90) near.push(n / 10 + 10);
+    near.push(n + 1, n - 1, n + 10, n - 10, n + 100, n - 100);
+    shuffle(near.filter(x => x >= 0 && x <= max)).forEach(x => { if (out.size < 4) out.add(x); });
+    while (out.size < 4) out.add(rnd(max));
+    return shuffle([...out]);
+  }
+  function letterDistractors(L){
+    const out = new Set([L]);
+    const similar = shuffle(CONFUSE.filter(g => g.includes(L)).join("").split("").filter(x => x !== L));
+    similar.forEach(x => { if (out.size < 3) out.add(x); });
+    const pool = shuffle(lvl === 3 ? LETTERS : RANGE[lvl].concat(LETTERS));
+    pool.forEach(x => { if (out.size < 4) out.add(x); });
+    return shuffle([...out]);
+  }
+  // o que mostrar como resposta certa
+  const answerText = q => topic === "num" ? q + " = " + words(q) : (mode === "write" ? q.toUpperCase() + " = " + q.toUpperCase().split("").map(L => PT[L]).join(" · ") : q + " = “" + PT[q] + "”");
+  const speakQ = (q, slow) => topic === "num" ? say(words(q), slow) : (mode === "write" ? say(spellOut(q), slow) : say(spoken(q), slow));
+
+  function start(){
+    qs = makeQuestions(); i = 0; points = 0; streak = 0; hits = 0; misses = [];
+    $("menu").hidden = true; $("end").hidden = true; $("game").hidden = false;
+    window.scrollTo({ top:0 }); ask();
+  }
+  function hud(){
+    $("qCount").textContent = (i + 1) + " / " + qs.length;
+    $("streak").textContent = "🔥 " + streak;
+    $("pts").textContent = "⭐ " + points;
+    $("bar").style.width = (i / qs.length * 100) + "%";
+  }
+  const SPEAK_ICON = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>';
+  function speakButtons(pb, q){
+    const b = document.createElement("button"); b.className = "speak"; b.type = "button"; b.innerHTML = SPEAK_ICON + "Ouvir";
+    b.onclick = () => speakQ(q); pb.appendChild(b);
+    const s = document.createElement("button"); s.className = "quit"; s.type = "button"; s.textContent = "🐢 Ouvir devagar";
+    s.style.display = "block"; s.style.margin = "-6px auto 12px"; s.onclick = () => speakQ(q, true); pb.appendChild(s);
+    setTimeout(() => speakQ(q), 250);
+  }
+  function prompt(pb, text, cls){ const p = document.createElement("div"); p.className = "prompt " + (cls || ""); p.textContent = text; pb.appendChild(p); }
+  function typeBox(placeholder, isRight, given){
+    const wrap = document.createElement("div"); wrap.className = "answer";
+    const inp = document.createElement("input"); inp.type = "text"; inp.autocomplete = "off"; inp.autocapitalize = "none"; inp.spellcheck = false; inp.placeholder = placeholder; inp.setAttribute("aria-label", "Sua resposta");
+    const ok = document.createElement("button"); ok.type = "button"; ok.textContent = "OK";
+    const go = () => { if (!answered && inp.value.trim()) given(isRight(inp.value), inp.value.trim()); };
+    ok.onclick = go; inp.addEventListener("keydown", e => { if (e.key === "Enter") go(); });
+    wrap.append(inp, ok); $("inputBox").appendChild(wrap);
+    setTimeout(() => inp.focus(), 50);
+  }
+  function ask(){
+    answered = false; hud();
+    const q = qs[i], pb = $("promptBox"); $("fbBox").innerHTML = ""; pb.innerHTML = ""; $("inputBox").innerHTML = "";
+    if (topic === "num"){
+      if (mode === "listen"){
+        $("ask").textContent = canSpeak ? "Escute e escolha o número" : "Seu navegador não tem voz. Leia e escolha o número:";
+        canSpeak ? speakButtons(pb, q) : prompt(pb, words(q), "word");
+        options(q, numDistractors(q), x => String(x));
+      } else if (mode === "read"){
+        $("ask").textContent = "Que número é este?"; prompt(pb, words(q), "word");
+        options(q, numDistractors(q), x => String(x));
+      } else {
+        $("ask").textContent = "Escreva em inglês"; prompt(pb, q);
+        typeBox("ex.: twenty-one", v => norm(v) === norm(words(q)), (r, g) => check(r, q, g));
+      }
+    } else {
+      if (mode === "listen"){
+        $("ask").textContent = canSpeak ? "Escute e escolha a letra" : "Seu navegador não tem voz. Veja como se fala e escolha a letra:";
+        canSpeak ? speakButtons(pb, q) : prompt(pb, "“" + PT[q] + "”", "word");
+        options(q, letterDistractors(q), x => x);
+      } else if (mode === "read"){
+        $("ask").textContent = "Que letra se fala assim?"; prompt(pb, "“" + PT[q] + "”", "word");
+        options(q, letterDistractors(q), x => x);
+      } else {
+        $("ask").textContent = canSpeak ? "Escute as letras e escreva a palavra" : "Seu navegador não tem voz. Leia as letras e escreva a palavra:";
+        if (canSpeak) speakButtons(pb, q);
+        else { const sp = document.createElement("div"); sp.className = "spell"; q.toUpperCase().split("").forEach(L => { const s = document.createElement("span"); s.textContent = PT[L]; sp.appendChild(s); }); pb.appendChild(sp); }
+        const hint = document.createElement("p"); hint.className = "ask"; hint.textContent = "A palavra tem " + q.length + " letras"; pb.appendChild(hint);
+        typeBox("digite a palavra", v => v.toLowerCase().replace(/[^a-z]/g, "") === q, (r, g) => check(r, q, g));
+      }
+    }
+  }
+  function options(q, list, label){
+    const grid = document.createElement("div"); grid.className = "opts";
+    list.forEach(x => {
+      const b = document.createElement("button"); b.type = "button"; b.className = "opt" + (topic === "abc" ? " letter-opt" : ""); b.textContent = label(x);
+      if (topic === "abc") b.style.fontSize = "34px";
+      b.onclick = () => {
+        if (answered) return;
+        grid.querySelectorAll(".opt").forEach(o => { o.disabled = true; if (o.textContent === label(q)) o.classList.add("right"); });
+        if (x !== q) b.classList.add("wrong");
+        check(x === q, q, label(x));
+      };
+      grid.appendChild(b);
+    });
+    $("inputBox").appendChild(grid);
+  }
+  const PRAISE = ["Great!","Awesome!","Nice!","Perfect!","Well done!","You rock!"];
+  function check(right, q, given){
+    answered = true;
+    const fb = document.createElement("div");
+    if (right){
+      streak++; hits++; points += 10 + Math.min(streak - 1, 5) * 2;
+      fb.className = "fb ok pop"; fb.textContent = PRAISE[Math.floor(Math.random() * PRAISE.length)] + (streak >= 3 ? " 🔥 " + streak + " seguidas!" : "");
+    } else {
+      streak = 0; misses.push(q);
+      fb.className = "fb no shake"; fb.textContent = "Quase! A resposta certa é:";
+    }
+    const s = document.createElement("span"); s.className = "sol"; s.textContent = answerText(q); fb.appendChild(s);
+    if (canSpeak){
+      const m = document.createElement("button"); m.className = "mini"; m.type = "button";
+      m.textContent = topic === "abc" && mode === "write" ? "🔊 Ouvir a palavra" : "🔊 Ouvir a pronúncia";
+      m.onclick = () => topic === "abc" && mode === "write" ? say(q) : speakQ(q); fb.appendChild(m);
+    }
+    $("fbBox").innerHTML = ""; $("fbBox").appendChild(fb);
+    const next = document.createElement("button"); next.className = "big next"; next.type = "button";
+    next.textContent = i + 1 < qs.length ? "Próximo ▶" : "Ver resultado";
+    next.onclick = () => { i++; if (i < qs.length) ask(); else finish(); };
+    $("fbBox").appendChild(next);
+    hud(); $("bar").style.width = ((i + 1) / qs.length * 100) + "%";
+    setTimeout(() => next.focus(), 50);
+  }
+  function finish(){
+    if (canSpeak) speechSynthesis.cancel();
+    $("game").hidden = true; $("end").hidden = false; window.scrollTo({ top:0 });
+    const n = qs.length, nStars = hits >= n ? 3 : hits >= n * .8 ? 2 : hits >= n * .5 ? 1 : 0;
+    $("stars").innerHTML = [0,1,2].map(k => '<span class="' + (k < nStars ? "" : "off") + '">★</span>').join("");
+    $("finalScore").textContent = hits + " de " + n;
+    const best = getBest(), key = topic + mode + lvl, record = best[key] == null || points > best[key];
+    if (record){ best[key] = points; setBest(best); }
+    $("finalMsg").textContent = (record ? "Novo recorde: " : "Pontos: ") + points + " ⭐ · " +
+      (hits === n ? "Perfeito! Tente o próximo nível." : hits >= n * .8 ? "Muito bem! Falta pouco para o perfeito." : hits >= n * .5 ? "Bom trabalho! Treine mais um pouco." : "Continue treinando, você vai melhorar!");
+    const rv = $("review"); rv.innerHTML = "";
+    if (misses.length){
+      const h = document.createElement("h2"); h.textContent = "Para revisar"; rv.appendChild(h);
+      const ul = document.createElement("ul");
+      misses.forEach(q => { const li = document.createElement("li"); li.textContent = answerText(q); ul.appendChild(li); });
+      rv.appendChild(ul);
+    }
+  }
+  $("startBtn").onclick = start;
+  $("againBtn").onclick = start;
+  $("menuBtn").onclick = () => { $("end").hidden = true; $("menu").hidden = false; showBest(); };
+  $("quitBtn").onclick = () => { if (canSpeak) speechSynthesis.cancel(); $("game").hidden = true; $("menu").hidden = false; showBest(); };
+  labels();
+})();
+</script>
+</body>
+</html>
